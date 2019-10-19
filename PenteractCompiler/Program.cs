@@ -5,26 +5,27 @@ using PenteractCompiler.Geometry;
 using PenteractCompiler.Helpers;
 
 namespace PenteractCompiler {
-    class Program {
-        private static Penteract Penteract;
-        private static LocationHolder start;
-        private static LocationHolder end;
-        private static LocationHolder current;
-        
-        static void Main(string[] args) {
+    internal static class Program {
+        private static Penteract _penteract;
+        private static LocationHolder _start;
+        private static LocationHolder _end;
+        private static LocationHolder _current;
+
+        private static void Main(string[] args) {
             CreateTesseract();
 
             GetTravelPath();
             
-            Console.WriteLine(start);
-            Console.WriteLine(end);
-
+            Console.WriteLine($"Start:\t\t{_start}");
+            Console.WriteLine($"End\t\t{_end}");
+            Console.WriteLine("\n");
+            
             Travel();
         }
 
         private static void CreateTesseract() {
-            Penteract = new Penteract();
-            Penteract.SetTesseracts(
+            _penteract = new Penteract();
+            _penteract.SetTesseracts(
                 new Tesseract(Face.North).SetCubes(
                     new Cube(Face.East),
                     new Cube(Face.West),
@@ -129,41 +130,47 @@ namespace PenteractCompiler {
 
         private static void GetTravelPath() {
             var rand = new Random();
-            var startTesseract = Penteract.Tesseracts[rand.Next(Penteract.Tesseracts.Count - 1)];
+            var startTesseract = _penteract.Tesseracts[rand.Next(_penteract.Tesseracts.Count - 1)];
             var startCube = startTesseract.Cubes[rand.Next(startTesseract.Cubes.Count - 1)];
-            start = new LocationHolder(startTesseract, startCube);
+            _start = new LocationHolder(startTesseract, startCube);
             
             rand = new Random();
-            var endTesseract = Penteract.Tesseracts[rand.Next(Penteract.Tesseracts.Count - 1)];
+            var endTesseract = _penteract.Tesseracts[rand.Next(_penteract.Tesseracts.Count - 1)];
             var endCube = endTesseract.Cubes[rand.Next(endTesseract.Cubes.Count - 1)];
-            end = new LocationHolder(endTesseract, endCube);
+            _end = new LocationHolder(endTesseract, endCube);
         }
 
         private static void Travel() {
-            current = start;
-            var _inHyperCube = true;
+            _current = _start;
+            var inHyperCube = true;
 
             var travelFacesString = "";
-            while (_inHyperCube) {
-                var currentCubeFace = current.GetCube.Face;
-                var currentTesseractFace = current.GetTesseract.Face;
+            while (inHyperCube) {
+                Console.WriteLine($"Current:\t{_current}");
+                var currentCubeFace = _current.GetCube.Face;
+                var currentTesseractFace = _current.GetTesseract.Face;
                 var oppositeCubeFace = Face.GetOppositeFace(currentCubeFace);
                 var oppositeTesseractFace = Face.GetOppositeFace(currentTesseractFace);
 
-                var TravelFaces = new List<Face> {};
-                TravelFaces.AddRange(Face.Faces.Where
-                    (face => !(face == currentCubeFace || face == oppositeCubeFace 
-                                                       || face == currentTesseractFace 
-                                                       || face == oppositeTesseractFace)));
+                var travelFaces = new List<Face> {};
+                travelFaces.AddRange(Face.Faces.Where
+                    (face => !(face.Equals(currentCubeFace) || face.Equals(oppositeCubeFace) 
+                                                            || face.Equals(currentTesseractFace) 
+                                                            || face.Equals(oppositeTesseractFace))));
 
-                foreach (var travelFace in Face.Faces) {
-                    if (travelFace != currentCubeFace || travelFace != oppositeCubeFace
-                                                      || travelFace != currentTesseractFace 
-                                                      || travelFace != oppositeTesseractFace)
-                        travelFacesString += travelFace;
+                travelFacesString = travelFaces.ToArray().Aggregate(
+                    travelFacesString, (current, travelFace) => current + (travelFace + " "));
+
+                travelFacesString = travelFacesString.Trim();
+                Console.WriteLine($"Travel Faces:\t{travelFacesString}");
+
+                var inRoom = true;
+                while (inRoom) {
+                    Console.WriteLine($"Here is where I give you options on what to do, but I want to get this pushed soon");
+                    inRoom = false;
                 }
-                Console.WriteLine($"Travel Faces: {travelFacesString}");
-                _inHyperCube = false;
+                
+                inHyperCube = false;
             }
         }
     }

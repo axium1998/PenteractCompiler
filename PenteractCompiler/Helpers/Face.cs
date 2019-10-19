@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace PenteractCompiler.Helpers {
     public class Face {
@@ -30,7 +31,7 @@ namespace PenteractCompiler.Helpers {
                 case "East": return West;
                 case "West": return East;
                 case "Up": return Down;
-                case "Down": return Down;
+                case "Down": return Up;
                 case "Ana": return Kata;
                 case "Kata": return Ana;
                 case "Strange": return Charm;
@@ -39,6 +40,9 @@ namespace PenteractCompiler.Helpers {
             }
         }
 
+        public bool Equals(Face face) {
+            return face.Value == Value;
+        }
         public override string ToString() => Value;
     }
 }
