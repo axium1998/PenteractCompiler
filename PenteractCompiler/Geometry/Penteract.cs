@@ -1,18 +1,15 @@
 using System.Collections.Generic;
-using PenteractCompiler.Helpers;
 
 namespace PenteractCompiler.Geometry {
-    public class Penteract {
-        public List<Tesseract> Tesseracts { get; private set; }
-        
-        public Penteract SetTesseracts(params Tesseract [] tesseracts) {
-            Tesseracts = new List<Tesseract>();
+	public class Penteract {
+		public List<Tesseract> Tesseracts { get; private set; }
 
-            foreach (var tesseract in tesseracts) {
-                Tesseracts.Add(tesseract);
-            }
+		public Penteract SetTesseracts(params Tesseract[] tesseracts) {
+			Tesseracts = new List<Tesseract>();
 
-            return this;
-        }
-    }
+			foreach (var tesseract in tesseracts) Tesseracts.Add(tesseract);
+
+			return this;
+		}
+	}
 }

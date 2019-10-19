@@ -2,21 +2,19 @@ using System.Collections.Generic;
 using PenteractCompiler.Helpers;
 
 namespace PenteractCompiler.Geometry {
-    public class Tesseract {
-        public Face Face { get; private set; }
-        public List<Cube> Cubes { get; private set; }
+	public class Tesseract {
+		public Tesseract(Face face) {
+			Face = face;
+		}
 
-        public Tesseract(Face face) {
-            Face = face;
-        }
+		public Face Face { get; }
+		public List<Cube> Cubes { get; private set; }
 
-        public Tesseract SetCubes(params Cube[] cubes) {
-            Cubes = new List<Cube>();
-            foreach (var cube in cubes) {
-                Cubes.Add(cube);
-            }
+		public Tesseract SetCubes(params Cube[] cubes) {
+			Cubes = new List<Cube>();
+			foreach (var cube in cubes) Cubes.Add(cube);
 
-            return this;
-        }
-    }
+			return this;
+		}
+	}
 }
