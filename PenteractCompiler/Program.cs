@@ -16,8 +16,6 @@ namespace PenteractCompiler {
 
 			GetTravelPath();
 
-			Console.WriteLine($"Start:\t\t{_start}");
-			Console.WriteLine($"End\t\t{_end}");
 			Console.WriteLine("\n");
 
 			Travel();
@@ -144,9 +142,15 @@ namespace PenteractCompiler {
 			_current = _start;
 			var inHyperCube = true;
 
-			var travelFacesString = "";
+			var traveled = new List<LocationHolder>();
 			while (inHyperCube) {
+				Console.Clear();
+				Console.WriteLine($"Start:\t\t{_start}");
+				Console.WriteLine($"End\t\t{_end}\n");
 				Console.WriteLine($"Current:\t{_current}");
+				
+				var travelFacesString = "";
+				traveled.Add(_current);
 				var currentCubeFace = _current.GetCube.Face;
 				var currentTesseractFace = _current.GetTesseract.Face;
 				var oppositeCubeFace = Face.GetOppositeFace(currentCubeFace);
@@ -154,19 +158,98 @@ namespace PenteractCompiler {
 
 				var travelFaces = new List<Face>();
 				travelFaces.AddRange(Face.Faces.Where
-				(face => !(face.Equals(currentCubeFace) || face.Equals(oppositeCubeFace)
-				                                        || face.Equals(currentTesseractFace)
-				                                        || face.Equals(oppositeTesseractFace))));
+				(x => !(x.Equals(currentCubeFace) || x.Equals(oppositeCubeFace)
+				                                        || x.Equals(currentTesseractFace)
+				                                        || x.Equals(oppositeTesseractFace))));
 
 				travelFacesString = travelFaces.ToArray().Aggregate(
 					travelFacesString, (current, travelFace) => current + (travelFace + " "));
 
 				travelFacesString = travelFacesString.Trim();
 				Console.WriteLine($"Travel Faces:\t{travelFacesString}");
+				
+				for (int k = 0; k < 6; k++) {
+					Console.WriteLine($"[{k+1}]:\t{travelFaces[k]}");
+				}
+				Console.WriteLine("[7]:\tFlip");
+				Console.WriteLine("[8]:\tTravel Map");
+				Console.WriteLine("[9]:\tExit (will NOT save progress");
+
+				if (_current.Equals(_end)) {
+					Console.WriteLine("[10]:\tYou've made it! Leave the hypercube.");
+				}
 
 				var inRoom = true;
-				while (inRoom) inRoom = false;
-				inHyperCube = false;
+				Face face;
+				while (inRoom) {
+					var choice = Console.ReadLine();
+					switch (choice) {
+						case "1":
+							face = travelFaces[0];
+							_current = new LocationHolder(_current.GetTesseract, new Cube(face));
+							inRoom = false;
+							break;
+						
+						case "2":
+							face = travelFaces[1];
+							_current = new LocationHolder(_current.GetTesseract, new Cube(face));
+							inRoom = false;
+							break;
+						
+						case "3": 
+							face = travelFaces[2];
+							_current = new LocationHolder(_current.GetTesseract, new Cube(face));
+							inRoom = false;
+							break;
+						
+						case "4":
+							face = travelFaces[3];
+							_current = new LocationHolder(_current.GetTesseract, new Cube(face));
+							inRoom = false;
+							break;
+						
+						case "5":
+							face = travelFaces[4];
+							_current = new LocationHolder(_current.GetTesseract, new Cube(face));
+							inRoom = false;
+							break;
+						
+						case "6":
+							face = travelFaces[5];
+							_current = new LocationHolder(_current.GetTesseract, new Cube(face));
+							inRoom = false;
+							break;
+						
+						case "7":
+							_current = new LocationHolder(new Tesseract(_current.GetCube.Face), new Cube(_current.GetTesseract.Face));
+							inRoom = false;
+							break;
+						
+						case "8":
+							var travelString = traveled.Aggregate("", (current, loc) => current + (loc + " "));
+
+							travelString = travelString.Trim();
+							Console.WriteLine($"Travel Path: {travelString}");
+							break;
+						
+						case "9":
+							inRoom = false;
+							inHyperCube = false;
+							break;
+						
+						default:
+							if (_current.Equals(_end)) {
+								Console.WriteLine("Leaving the hypercube");
+								inRoom = false;
+								inHyperCube = false;
+								break;
+							}
+							else {
+								Console.WriteLine($"Oops! {choice} is not a choice. Please try again.");
+								break;
+							}
+					}
+				}
 			}
 		}
 	}

@@ -16,5 +16,9 @@ namespace PenteractCompiler.Geometry {
 
 			return this;
 		}
+
+		public bool Equals(Tesseract tesseract) {
+			return Face.Equals(tesseract.Face);
+		}
 	}
 }

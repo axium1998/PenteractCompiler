@@ -10,11 +10,15 @@ namespace PenteractCompiler.Helpers {
 			Cube = cube;
 		}
 
+		public Cube GetCube => Cube;
+		public Tesseract GetTesseract => Tesseract;
+
+		public bool Equals(LocationHolder loc) {
+			return Tesseract.Equals(loc.Tesseract) && Cube.Equals(loc.Cube);
+		}
+
 		public override string ToString() {
 			return $"{Tesseract.Face}:{Cube.Face}";
 		}
-
-		public Cube GetCube => Cube;
-		public Tesseract GetTesseract => Tesseract;
 	}
 }

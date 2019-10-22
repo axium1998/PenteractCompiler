@@ -41,7 +41,7 @@ namespace PenteractCompiler.Helpers {
 		}
 
 		public bool Equals(Face face) {
-			return face.Value == Value;
+			return Value.Equals(face.Value);
 		}
 
 		public override string ToString() {

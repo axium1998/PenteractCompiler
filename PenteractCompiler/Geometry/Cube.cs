@@ -8,13 +8,9 @@ namespace PenteractCompiler.Geometry {
 		}
 
 		public Face Face { get; }
-		public List<Face> Faces { get; private set; }
 
-		public Cube SetFaces(params Face[] faces) {
-			Faces = new List<Face>();
-			foreach (var face in faces) Faces.Add(face);
-
-			return this;
+		public bool Equals(Cube cube) {
+			return Face.Equals(cube.Face);
 		}
 	}
 }
